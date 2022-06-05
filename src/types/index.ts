@@ -47,11 +47,6 @@ interface Mixtape {
   about?: string;
 }
 
-interface Video {
-  name: string;
-  created_at: number;
-}
-
 interface ITokenStatus {
   default: string;
   enum: string[];
@@ -92,6 +87,23 @@ interface IVault {
   [key: string]: number;
 }
 
+interface IProfileNft {
+  token_uri: string;
+  image_url: string;
+}
+
+export interface IArtistStatus {
+  default: string;
+  enum: string[];
+}
+
+export interface IPendingArtist {
+  twitter_id?: string;
+  artist_name: string;
+  token_symbol: string;
+  token_icon_key?: string;
+}
+
 export interface IArtist {
   _id?: string;
   account_type?: AccountType;
@@ -130,7 +142,40 @@ export interface IArtist {
   vaults?: IVault;
 }
 
-interface IProfileNft {
-  token_uri: string;
-  image_url: string;
+export interface IUser {
+  account_type: string;
+  applied_as_artist: boolean;
+  created_at?: number;
+  profile_image_key?: string;
+  artist_status?: IArtistStatus;
+  has_capabilities?: IHasCapabilities;
+  pending_artist?: IPendingArtist;
+  email?: string;
+  twitter_id?: string;
+  socials: ISocials;
+  username?: string;
+  profile_image?: BucketStorage;
+  updated_at?: string;
+  address: string;
+  __v?: number;
+  _id: string;
+  social_tokens?: IUserSocialTokens;
+}
+
+export interface IAdmin {
+  account_type: string;
+  applied_as_artist: boolean;
+  created_at?: number;
+  email?: string;
+  twitter_id?: string;
+  profile_image_key?: string;
+  socials: ISocials;
+  username?: string;
+  password: string;
+  profile_image?: BucketStorage;
+  has_capabilities?: IHasCapabilities;
+  updated_at?: string;
+  address?: string;
+  __v?: number;
+  _id: string;
 }

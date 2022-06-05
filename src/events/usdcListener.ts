@@ -28,6 +28,7 @@ export const usdcListener = async () => {
   const contracts = await contractsCreator();
   let transactionIndex = -1;
   contract.on("Transfer", async (from, to, value, data) => {
+    console.info("Transfer...");
     if (transactionIndex !== data.transactionIndex) {
       transactionIndex = data.transactionIndex;
       console.log({ from, to, value });
@@ -35,6 +36,7 @@ export const usdcListener = async () => {
       const contractAddress = includes(SOCIAL_TOKENS_ADDRESSES, from)
         ? from
         : to;
+      const userAddress = includes(SOCIAL_TOKENS_ADDRESSES, from) ? to : from;
       const contract = get(contracts, contractAddress);
 
       try {
@@ -43,10 +45,18 @@ export const usdcListener = async () => {
         );
         const current_price = ethers.utils.formatUnits(price, USDC_DECIMALS);
         const created_at = new Date();
-        const res = await updatePrice(contractAddress, {
-          current_price,
-          created_at,
+
+        let balance = await contract.balanceOf(userAddress);
+
+        balance = ethers.utils.formatUnits(balance, SOCIAL_TOKEN_DECIMALS);
+
+        const res = await updatePrice({
+          social_token_id: contractAddress,
+          price_history: { current_price, created_at },
+          address: userAddress,
+          balance,
         });
+
         console.info({ current_price });
         console.info({ res });
       } catch (error) {

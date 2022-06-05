@@ -1,13 +1,120 @@
+import { get, isEmpty } from "lodash";
+
 import Artist from "../../models/Artist";
 import { IPriceHistory } from "../types";
+import Admin from "../../models/Admin";
+import User from "../../models/User";
+import cache from "./cache";
 
-export const updatePrice = async (address: string, data: IPriceHistory) => {
-  const artist = await Artist.findOne({ social_token_id: address });
+interface Params {
+  address: string;
+  balance: string;
+  social_token_id: string;
+  price_history: IPriceHistory;
+}
+
+// interface IUserSocialTokens {
+//   [key: string]: { token_id: string; balance: string };
+// }
+
+// interface IFans {
+//     [key: string]: {
+//       name: string;
+//       balance: string;
+//       username: string;
+//       // profile_image_key: string;
+//     };
+//   }
+
+export const updatePrice = async ({
+  balance,
+  address,
+  price_history,
+  social_token_id,
+}: Params) => {
+  const artist = await Artist.findOne({ social_token_id });
   if (!artist) return "Artist not found";
 
-  artist.price_history.push(data);
+  console.info({ balance, address });
+
+  artist.price_history.push(price_history);
+
+  const user = await User.findOne({ address });
+
+  const artistUsername = get(artist, "username");
+  const artistId = get(artist, "_id");
+
+  if (!isEmpty(user)) {
+    user.social_tokens = {
+      ...user.social_tokens,
+      [artistId]: { balance, token_id: social_token_id },
+    };
+
+    artist.fans = {
+      ...artist.fans,
+      [user._id]: {
+        balance,
+        name: user.name,
+        username: user.username,
+        profile_image_key: user.profile_image_key,
+      },
+    };
+
+    user.save();
+  } else {
+    const admin = await Admin.findOne({ address });
+
+    if (!isEmpty(admin)) {
+      admin.social_tokens = {
+        ...admin.social_tokens,
+        [artistId]: { balance, token_id: social_token_id },
+      };
+
+      artist.fans = {
+        ...artist.fans,
+        [admin._id]: {
+          balance,
+          name: admin.name,
+          username: admin.username,
+          profile_image_key: admin.profile_image_key,
+        },
+      };
+
+      admin.save();
+    } else {
+      const artistAcc = await Artist.findOne({ address });
+
+      if (!isEmpty(artistAcc)) {
+        artistAcc.social_tokens = {
+          ...artistAcc.social_tokens,
+          [artistId]: { balance, token_id: social_token_id },
+        };
+
+        artist.fans = {
+          ...artist.fans,
+          [artistAcc._id]: {
+            balance,
+            name: artistAcc.name,
+            username: artistAcc.username,
+            profile_image_key: artistAcc.profile_image_key,
+          },
+        };
+      }
+
+      artistAcc.save();
+    }
+  }
 
   artist.save();
+
+  //   await cache.del([
+  //     "artists",
+  //     `artist:${id}`,
+  //     "discover-daos",
+  //     "discover-artists",
+  //     "dashboard-artists",
+  //     `artist:${username}`,
+  //   ]);
 
   return "Success";
 };
