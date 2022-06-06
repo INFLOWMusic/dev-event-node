@@ -1,15 +1,14 @@
 import { ethers } from "ethers";
-
-import {
-  SOCIAL_TOKENS_ADDRESSES,
-  SOCIAL_TOKEN_DECIMALS,
-  USDC_CONTRACT,
-  USDC_DECIMALS,
-} from "../utils/constants";
-import { contractsCreator } from "../contracts/socialToken";
 import { get, includes } from "lodash";
 
-import { updatePrice } from "../utils/updatePrice";
+import { contractsCreator } from "../contracts/socialToken";
+import { updateDB } from "../utils/updateDB";
+import {
+  USDC_CONTRACT,
+  USDC_DECIMALS,
+  SOCIAL_TOKEN_DECIMALS,
+  SOCIAL_TOKENS_ADDRESSES,
+} from "../utils/constants";
 
 export const usdcListener = async () => {
   const provider = new ethers.providers.WebSocketProvider(
@@ -23,16 +22,17 @@ export const usdcListener = async () => {
     provider
   );
 
-  console.info(Date.now());
-
   const contracts = await contractsCreator();
   let transactionIndex = -1;
   contract.on("Transfer", async (from, to, value, data) => {
     console.info("Transfer...");
     if (transactionIndex !== data.transactionIndex) {
       transactionIndex = data.transactionIndex;
-      console.log({ from, to, value });
-      console.log({ data });
+      //USDC amount
+      // const usdcProce = data.args[2];
+      // const usdcPriceInUsdc = ethers.utils.formatUnits(usdcProce, USDC_DECIMALS);
+      // console.info({ usdcPriceInUsdc });
+
       const contractAddress = includes(SOCIAL_TOKENS_ADDRESSES, from)
         ? from
         : to;
@@ -50,15 +50,12 @@ export const usdcListener = async () => {
 
         balance = ethers.utils.formatUnits(balance, SOCIAL_TOKEN_DECIMALS);
 
-        const res = await updatePrice({
+        await updateDB({
           social_token_id: contractAddress,
           price_history: { current_price, created_at },
           address: userAddress,
           balance,
         });
-
-        console.info({ current_price });
-        console.info({ res });
       } catch (error) {
         console.error(error);
       }

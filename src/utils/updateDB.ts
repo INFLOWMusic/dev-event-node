@@ -13,20 +13,7 @@ interface Params {
   price_history: IPriceHistory;
 }
 
-// interface IUserSocialTokens {
-//   [key: string]: { token_id: string; balance: string };
-// }
-
-// interface IFans {
-//     [key: string]: {
-//       name: string;
-//       balance: string;
-//       username: string;
-//       // profile_image_key: string;
-//     };
-//   }
-
-export const updatePrice = async ({
+export const updateDB = async ({
   balance,
   address,
   price_history,
@@ -34,8 +21,6 @@ export const updatePrice = async ({
 }: Params) => {
   const artist = await Artist.findOne({ social_token_id });
   if (!artist) return "Artist not found";
-
-  console.info({ balance, address });
 
   artist.price_history.push(price_history);
 
@@ -107,14 +92,14 @@ export const updatePrice = async ({
 
   artist.save();
 
-  //   await cache.del([
-  //     "artists",
-  //     `artist:${id}`,
-  //     "discover-daos",
-  //     "discover-artists",
-  //     "dashboard-artists",
-  //     `artist:${username}`,
-  //   ]);
+  await cache.del([
+    "artists",
+    "discover-daos",
+    "discover-artists",
+    "dashboard-artists",
+    `artist:${artistId}`,
+    `artist:${artistUsername}`,
+  ]);
 
   return "Success";
 };
