@@ -23,7 +23,7 @@ export const updateDB = async ({
   if (!artist) return "Artist not found";
 
   artist.price_history.push(price_history);
-
+  let userId = "";
   const user = await User.findOne({ address });
 
   const artistUsername = get(artist, "username");
@@ -44,7 +44,7 @@ export const updateDB = async ({
         profile_image_key: user.profile_image_key,
       },
     };
-
+    userId = user._id;
     user.save();
   } else {
     const admin = await Admin.findOne({ address });
@@ -65,6 +65,7 @@ export const updateDB = async ({
         },
       };
 
+      userId = admin._id;
       admin.save();
     } else {
       const artistAcc = await Artist.findOne({ address });
@@ -86,6 +87,7 @@ export const updateDB = async ({
         };
       }
 
+      userId = artistAcc._id;
       artistAcc.save();
     }
   }
@@ -99,6 +101,7 @@ export const updateDB = async ({
     "dashboard-artists",
     `artist:${artistId}`,
     `artist:${artistUsername}`,
+    `dashboard-user:${userId}`,
   ]);
 
   return "Success";
