@@ -32,7 +32,6 @@ export const usdcListener = async () => {
         : to;
       const userAddress = includes(SOCIAL_TOKENS_ADDRESSES, from) ? to : from;
       const contract = get(contracts, contractAddress);
-
       try {
         const price = await contract.getMintPrice(
           ethers.utils.parseUnits("1", SOCIAL_TOKEN_DECIMALS)
