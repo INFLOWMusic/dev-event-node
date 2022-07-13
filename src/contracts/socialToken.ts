@@ -15,12 +15,10 @@ const getAbi = (address: string) => ({
 });
 
 const abis = map(SOCIAL_TOKENS_ADDRESSES, (address) => getAbi(address));
-
-const provider = new ethers.providers.JsonRpcProvider(
-  "https://rinkeby.infura.io/v3/6c355ab4385549299505dc40e02951f1"
-);
-//   "wss://rinkeby.infura.io/ws/v3/6c355ab4385549299505dc40e02951f1",
-//   { name: "rinkeby", chainId: 4 }
+  const provider = new ethers.providers.WebSocketProvider(
+    `wss://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
+    { name: "mainnet", chainId: 1 }
+  );
 
 const getContract = async (social: { address: string; abi: string[] }) => {
   const socialContract = new ethers.Contract(
