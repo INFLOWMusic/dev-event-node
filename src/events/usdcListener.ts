@@ -5,6 +5,7 @@ import { contractsCreator } from "../contracts/socialToken";
 import { updateDB } from "../utils/updateDB";
 import {
   USDC_CONTRACT,
+  NULL_ADDRESS,
   USDC_DECIMALS,
   SOCIAL_TOKEN_DECIMALS,
   SOCIAL_TOKENS_ADDRESSES,
@@ -13,10 +14,11 @@ import {
 
 export const usdcListener = async () => {
   const provider = new ethers.providers.WebSocketProvider(
-    `wss://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
+    `wss://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`
   );
+
   const contract = new ethers.Contract(
-    "0xF61D510C8cF4218D98E674f0bE0b0FD38e2a1C3a",
+    SOCIAL_TOKENS_ADDRESSES[0],
     SOCIAL_CONTRACT_ABI,
     provider
   );
@@ -27,13 +29,12 @@ export const usdcListener = async () => {
     console.info("Transfer...");
     if (transactionIndex !== data.transactionIndex) {
       transactionIndex = data.transactionIndex;
-    
-      const contractAddress = "0xF61D510C8cF4218D98E674f0bE0b0FD38e2a1C3a"        
-      const userAddress = includes(SOCIAL_TOKENS_ADDRESSES, from) ? to : from;
+
+      const contractAddress = SOCIAL_TOKENS_ADDRESSES[0];
+      const userAddress = from === NULL_ADDRESS ? to : from;
       const contract = get(contracts, contractAddress);
 
       console.info({ userAddress, contractAddress });
-      console.info({ from, to });
 
       try {
         const price = await contract.getMintPrice(
