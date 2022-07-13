@@ -26,11 +26,7 @@ export const usdcListener = async () => {
     console.info("Transfer...");
     if (transactionIndex !== data.transactionIndex) {
       transactionIndex = data.transactionIndex;
-      //USDC amount
-      // const usdcProce = data.args[2];
-      // const usdcPriceInUsdc = ethers.utils.formatUnits(usdcProce, USDC_DECIMALS);
-      // console.info({ usdcPriceInUsdc });
-
+    
       const contractAddress = includes(SOCIAL_TOKENS_ADDRESSES, from)
         ? from
         : to;
