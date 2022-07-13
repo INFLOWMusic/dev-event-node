@@ -1,11 +1,11 @@
 export const USDC_CONTRACT_ADDRESS =
-"0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
+  "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
 
 export const USDC_DECIMALS = 6;
 export const SOCIAL_TOKEN_DECIMALS = 18;
 
 export const SOCIAL_TOKENS_ADDRESSES = [
-"0xF61D510C8cF4218D98E674f0bE0b0FD38e2a1C3a"
+  "0xF61D510C8cF4218D98E674f0bE0b0FD38e2a1C3a",
 ];
 
 export const USDC_CONTRACT = {
@@ -35,3 +35,5 @@ export const SOCIAL_CONTRACT_ABI = [
   "function mint(uint256 amount, address collateralAddress) external override nonReentrant",
   "function burn(uint256 amount) external override nonReentrant",
 ];
+
+export const NULL_ADDRESS = "0x0000000000000000000000000000000000000000";

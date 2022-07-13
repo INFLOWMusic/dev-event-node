@@ -90,7 +90,7 @@ export const updateDB = async ({
         };
       }
 
-      userId = artistAcc._id;
+      userId = get(artistAcc, "_id");
       artistAcc.save();
     }
   }
