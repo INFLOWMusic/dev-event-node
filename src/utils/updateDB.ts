@@ -20,7 +20,10 @@ export const updateDB = async ({
   social_token_id,
 }: Params) => {
   const artist = await Artist.findOne({ social_token_id });
-  if (!artist) return "Artist not found";
+  if (!artist) {
+    console.error("Artist not found");
+    return "Artist not found";
+  }
 
   artist.price_history.push(price_history);
   let userId = "";

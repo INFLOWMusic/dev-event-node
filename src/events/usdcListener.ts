@@ -42,12 +42,13 @@ export const usdcListener = async () => {
 
         balance = ethers.utils.formatUnits(balance, SOCIAL_TOKEN_DECIMALS);
 
-        await updateDB({
+        const response = await updateDB({
           social_token_id: contractAddress,
           price_history: { current_price, created_at },
           address: userAddress,
           balance,
         });
+        console.info({ response });
       } catch (error) {
         console.error(error);
       }
