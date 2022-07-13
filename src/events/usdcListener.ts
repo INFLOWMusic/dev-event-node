@@ -28,9 +28,7 @@ export const usdcListener = async () => {
     if (transactionIndex !== data.transactionIndex) {
       transactionIndex = data.transactionIndex;
     
-      const contractAddress = includes(SOCIAL_TOKENS_ADDRESSES, from)
-        ? from
-        : to;
+      const contractAddress = "0xF61D510C8cF4218D98E674f0bE0b0FD38e2a1C3a"        
       const userAddress = includes(SOCIAL_TOKENS_ADDRESSES, from) ? to : from;
       const contract = get(contracts, contractAddress);
       try {
