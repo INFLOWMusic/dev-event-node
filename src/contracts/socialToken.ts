@@ -25,7 +25,6 @@ const getContract = async (social: { address: string; abi: string[] }) => {
     social.abi,
     provider
   );
-
   return socialContract;
 };
 
