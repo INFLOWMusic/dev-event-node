@@ -8,6 +8,7 @@ import {
   USDC_DECIMALS,
   SOCIAL_TOKEN_DECIMALS,
   SOCIAL_TOKENS_ADDRESSES,
+  SOCIAL_CONTRACT_ABI,
 } from "../utils/constants";
 
 export const usdcListener = async () => {
@@ -15,8 +16,8 @@ export const usdcListener = async () => {
     `wss://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
   );
   const contract = new ethers.Contract(
-    USDC_CONTRACT.address,
-    USDC_CONTRACT.abi,
+    "0xF61D510C8cF4218D98E674f0bE0b0FD38e2a1C3a",
+    SOCIAL_CONTRACT_ABI,
     provider
   );
 
