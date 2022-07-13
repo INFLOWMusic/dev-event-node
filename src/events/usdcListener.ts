@@ -13,9 +13,7 @@ import {
 export const usdcListener = async () => {
   const provider = new ethers.providers.WebSocketProvider(
     `wss://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-    { name: "mainnet", chainId: 1 }
   );
-
   const contract = new ethers.Contract(
     USDC_CONTRACT.address,
     USDC_CONTRACT.abi,

@@ -17,7 +17,6 @@ const getAbi = (address: string) => ({
 const abis = map(SOCIAL_TOKENS_ADDRESSES, (address) => getAbi(address));
   const provider = new ethers.providers.WebSocketProvider(
     `wss://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`,
-    { name: "mainnet", chainId: 1 }
   );
 
 const getContract = async (social: { address: string; abi: string[] }) => {
