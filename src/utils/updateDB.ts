@@ -19,6 +19,7 @@ export const updateDB = async ({
   price_history,
   social_token_id,
 }: Params) => {
+  try {
   const artist = await Artist.findOne({ social_token_id });
   if (!artist) {
     console.error("Artist not found");
@@ -96,7 +97,6 @@ export const updateDB = async ({
   }
 
   artist.save();
-
   await cache.del([
     "artists",
     "discover-daos",
@@ -106,6 +106,10 @@ export const updateDB = async ({
     `artist:${artistUsername}`,
     `dashboard-user:${userId}`,
   ]);
-
   return "Success";
+  }
+  catch(error) {
+    console.log("there was an error")
+    console.error(error);
+  }
 };

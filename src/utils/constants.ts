@@ -4,6 +4,11 @@ export const USDC_CONTRACT_ADDRESS =
 export const USDC_DECIMALS = 6;
 export const SOCIAL_TOKEN_DECIMALS = 18;
 
+export const checkEnvironment = () => {
+  if (process.env.NODE_ENV !== "production") {
+  }
+}
+
 export const SOCIAL_TOKENS_ADDRESSES = [
   "0xF61D510C8cF4218D98E674f0bE0b0FD38e2a1C3a",
 ];
