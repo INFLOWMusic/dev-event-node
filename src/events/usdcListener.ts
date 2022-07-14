@@ -22,11 +22,11 @@ export const usdcListener = async () => {
   );
 
   const contracts = await contractsCreator();
-  let transactionIndex = -1;
+  let transactionHash = "";
   contract.on("Transfer", async (from, to, value, data) => {
     console.info("Transfer...");
-    if (transactionIndex !== data.transactionIndex) {
-      transactionIndex = data.transactionIndex;
+    if (transactionHash !== data.transactionHash) {
+      transactionHash = data.transactionHash;
 
       const contractAddress = SOCIAL_TOKENS_ADDRESSES[0];
       const userAddress = from === NULL_ADDRESS ? to : from;
