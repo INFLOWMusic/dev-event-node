@@ -1,21 +1,19 @@
+import { get } from "lodash";
 import { ethers } from "ethers";
-import { get, includes } from "lodash";
 
 import { contractsCreator } from "../contracts/socialToken";
 import { updateDB } from "../utils/updateDB";
 import {
-  USDC_CONTRACT,
   NULL_ADDRESS,
   USDC_DECIMALS,
   SOCIAL_TOKEN_DECIMALS,
   SOCIAL_TOKENS_ADDRESSES,
   SOCIAL_CONTRACT_ABI,
 } from "../utils/constants";
+import networks from "../networks";
 
 export const usdcListener = async () => {
-  const provider = new ethers.providers.WebSocketProvider(
-    `wss://eth-mainnet.g.alchemy.com/v2/${process.env.ALCHEMY_API_KEY}`
-  );
+  const provider = networks.provider;
 
   const contract = new ethers.Contract(
     SOCIAL_TOKENS_ADDRESSES[0],
