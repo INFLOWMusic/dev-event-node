@@ -1,17 +1,11 @@
-export const USDC_CONTRACT_ADDRESS =
-  "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48";
+import network from "../networks";
+
+export const USDC_CONTRACT_ADDRESS = network.USDC_CONTRACT_ADDRESS;
 
 export const USDC_DECIMALS = 6;
 export const SOCIAL_TOKEN_DECIMALS = 18;
 
-export const checkEnvironment = () => {
-  if (process.env.NODE_ENV !== "production") {
-  }
-}
-
-export const SOCIAL_TOKENS_ADDRESSES = [
-  "0xF61D510C8cF4218D98E674f0bE0b0FD38e2a1C3a",
-];
+export const SOCIAL_TOKENS_ADDRESSES = network.SOCIAL_TOKENS_ADDRESSES;
 
 export const USDC_CONTRACT = {
   address: USDC_CONTRACT_ADDRESS,
